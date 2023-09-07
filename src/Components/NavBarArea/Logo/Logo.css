@@ -1,0 +1,15 @@
+.Logo {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.Logo span {
+  font-size: 3.2rem;
+}
+
+.Logo h1 {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #fff;
+}
