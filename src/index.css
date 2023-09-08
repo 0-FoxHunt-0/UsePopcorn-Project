@@ -39,15 +39,6 @@ body {
   justify-content: center;
 }
 
-.box {
-  width: 42rem;
-  max-width: 42rem;
-  background-color: var(--color-background-500);
-  border-radius: 0.9rem;
-  overflow-y: scroll;
-  position: relative;
-}
-
 .loader {
   text-align: center;
   text-transform: uppercase;
@@ -295,3 +286,9 @@ EMPTY STAR
 </svg>
 
 */
+
+.Box::-webkit-scrollbar,
+.list::-webkit-scrollbar {
+  display: none;
+  scroll-behavior: smooth;
+}

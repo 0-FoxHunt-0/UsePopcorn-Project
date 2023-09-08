@@ -1,21 +1,15 @@
-import { useState } from "react";
-import MovieModel from "../../../Models/MovieModel";
-import "./Navbar.css";
-import Search from "../Search/Search";
 import Logo from "../Logo/Logo";
-import NumResults from "../NumResults/NumResults";
+import "./Navbar.css";
 
 interface NavbarProps {
-  movies: MovieModel[];
+  children: any;
 }
 
 function Navbar(props: NavbarProps): JSX.Element {
-
   return (
     <nav className="Navbar">
       <Logo />
-      <Search />
-      <NumResults movies={props.movies} />
+      {props.children}
     </nav>
   );
 }
