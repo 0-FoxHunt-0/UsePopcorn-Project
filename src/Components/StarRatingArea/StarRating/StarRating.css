@@ -1,0 +1,14 @@
+.StarRating {
+	display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.StarRating .star-container {
+    display: flex;
+}
+
+.StarContainer .text-style {
+    line-height: 1;
+    margin: 0;
+}
