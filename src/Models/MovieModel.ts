@@ -3,6 +3,7 @@ class MovieModel {
   Title: string;
   Year: string;
   Poster: string;
+  Type: string;
 }
 
 export default MovieModel;

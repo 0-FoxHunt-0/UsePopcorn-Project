@@ -1,16 +1,19 @@
 import { useState } from "react";
 import "./Search.css";
 
-function Search(): JSX.Element {
-  const [query, setQuery] = useState<string>("");
+interface SearchProps {
+  query: string;
+  setQuery: React.Dispatch<React.SetStateAction<string>>;
+}
 
+function Search(props: SearchProps): JSX.Element {
   return (
     <input
       className="Search"
       type="text"
       placeholder="Search movies..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
+      value={props.query}
+      onChange={(e) => props.setQuery(e.target.value)}
     ></input>
   );
 }

@@ -8,7 +8,7 @@ interface NumResultsProps {
 function NumResults(props: NumResultsProps): JSX.Element {
   return (
     <div className="NumResults">
-      Found <strong>{props.movies.length}</strong> results
+      Found <strong>{props.movies ? props.movies.length : 0}</strong> results
     </div>
   );
 }
