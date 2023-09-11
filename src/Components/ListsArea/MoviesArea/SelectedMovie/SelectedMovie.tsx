@@ -45,7 +45,6 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
     };
 
     props.onAddWatched(newWatchedMovie);
-    
   }
 
   return (
@@ -76,9 +75,11 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
             <div className="rating">
               <StarRating onSetRating={setRating} maxRating={10} size={24} />
 
-              <button onClick={handleAdd} className="btn-add">
-                + Add to list
-              </button>
+              {rating > 0 && (
+                <button onClick={handleAdd} className="btn-add">
+                  + Add to list
+                </button>
+              )}
             </div>
             <p>
               <em>{movie.Plot}</em>
