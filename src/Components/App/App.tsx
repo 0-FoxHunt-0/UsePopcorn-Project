@@ -34,7 +34,18 @@ function App(): JSX.Element {
   }
 
   function handleAddWatched(movie: WatchedModel): void {
-    setWatched((watched) => [...watched, movie]);
+    const updatedWatched = [...watched];
+    const isWatched: boolean = updatedWatched
+      .map((movie) => movie.imdbID)
+      .includes(movie.imdbID);
+
+    if (isWatched)
+      updatedWatched.find(
+        (prevMovie) => prevMovie.imdbID === movie.imdbID
+      ).userRating = movie.userRating;
+    else updatedWatched.push(movie);
+
+    setWatched(updatedWatched);
     setSelectedId(null);
   }
 

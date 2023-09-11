@@ -35,7 +35,7 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
 
   function handleAdd() {
     const newWatchedMovie: WatchedModel = {
-      imdbID: movie.imdbRating,
+      imdbID: movie.imdbID,
       Poster: movie.Poster,
       Title: movie.Title,
       imdbRating: +movie.imdbRating,
