@@ -1,9 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import App from "./Components/App/App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import App from "./Components/App/App";
-import StarRating from "./Components/StarRatingArea/StarRating/StarRating";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

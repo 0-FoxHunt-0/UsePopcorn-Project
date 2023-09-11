@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import MovieModel from "../../Models/MovieModel";
 import WatchedModel from "../../Models/WatchedModel";
-import appConfig from "../../Utils/AppConfig";
 import Main from "../Main/Main";
 import Navbar from "../NavBarArea/Navbar/Navbar";
 import NumResults from "../NavBarArea/NumResults/NumResults";
@@ -20,9 +19,7 @@ import "./App.css";
 
 function App(): JSX.Element {
   const [movies, setMovies] = useState<MovieModel[]>([]);
-  const [watched, setWatched] = useState<WatchedModel[]>(
-    appConfig.tempWatchedData
-  );
+  const [watched, setWatched] = useState<WatchedModel[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [query, setQuery] = useState<string>("");
@@ -38,7 +35,7 @@ function App(): JSX.Element {
 
   function handleAddWatched(movie: WatchedModel): void {
     setWatched((watched) => [...watched, movie]);
-    setSelectedId(null)
+    setSelectedId(null);
   }
 
   useEffect(() => {
@@ -67,13 +64,14 @@ function App(): JSX.Element {
       <Main>
         <Box>
           {isLoading && <Loader />}
-          {!isLoading && !error && movies?.length ? (
+          {query.length === 0 && (
+            <ErrorMessage message="Please enter a query Search..." />
+          )}
+          {!isLoading && !error && (
             <MovieList
               onSelectMovie={handleSelectMovie}
               movies={movies}
             ></MovieList>
-          ) : (
-            <ErrorMessage message="Please enter a query Search..." />
           )}
           {error && <ErrorMessage message={error} />}
         </Box>
