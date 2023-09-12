@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./SelectedMovie.css";
 import moviesService from "../../../../Services/MoviesService";
 import SelectedMovieModel from "../../../../Models/SelectedMovieModel";
@@ -8,6 +8,7 @@ import WatchedModel from "../../../../Models/WatchedModel";
 
 interface SelectedMovieProps {
   selectedId: string;
+  isWatched: boolean;
   onCloseMovie: () => void;
   onAddWatched: (movie: WatchedModel) => void;
 }
@@ -21,6 +22,7 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
 
   useEffect(() => {
     setIsLoading(true);
+    setRating(0);
 
     moviesService
       .getMovieDetails(props.selectedId)
@@ -32,6 +34,29 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
         setIsLoading(false);
       });
   }, [props.selectedId]);
+
+  useEffect(() => {
+    function callback(e: KeyboardEvent): void {
+      if (e.code === "Escape") {
+        props.onCloseMovie();
+      }
+    }
+
+    document.addEventListener("keydown", callback);
+
+    return () => {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [props, props.onCloseMovie]);
+
+  useEffect(() => {
+    if (!movie.Title) return;
+    document.title = `Movie | ${movie.Title}`;
+
+    return () => {
+      document.title = "usePopcorn";
+    };
+  }, [movie]);
 
   function handleAdd() {
     const newWatchedMovie: WatchedModel = {
@@ -75,11 +100,16 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
             <div className="rating">
               <StarRating onSetRating={setRating} maxRating={10} size={24} />
 
-              {rating > 0 && (
-                <button onClick={handleAdd} className="btn-add">
-                  + Add to list
-                </button>
-              )}
+              {rating > 0 &&
+                (!props.isWatched ? (
+                  <button onClick={handleAdd} className="btn-add">
+                    + Add to list
+                  </button>
+                ) : (
+                  <button onClick={handleAdd} className="btn-add">
+                    ↑ Update rating
+                  </button>
+                ))}
             </div>
             <p>
               <em>{movie.Plot}</em>

@@ -24,9 +24,14 @@ function App(): JSX.Element {
   const [error, setError] = useState<string>("");
   const [query, setQuery] = useState<string>("");
   const [selectedId, setSelectedId] = useState<string>(null);
+  const [isWatched, setIsWatched] = useState<boolean>(false);
 
-  function handleSelectMovie(id: string): void {
-    setSelectedId(id === selectedId ? null : id);
+  function handleSelectMovie(movie: MovieModel): void {
+    const watchedState: boolean = watched
+      .map((movie) => movie.imdbID)
+      .includes(movie.imdbID);
+    setIsWatched(watchedState);
+    setSelectedId(movie.imdbID === selectedId ? null : movie.imdbID);
   }
 
   function handleCloseMovie(): void {
@@ -35,11 +40,11 @@ function App(): JSX.Element {
 
   function handleAddWatched(movie: WatchedModel): void {
     const updatedWatched = [...watched];
-    const isWatched: boolean = updatedWatched
+    const watchedState: boolean = updatedWatched
       .map((movie) => movie.imdbID)
       .includes(movie.imdbID);
 
-    if (isWatched)
+    if (watchedState)
       updatedWatched.find(
         (prevMovie) => prevMovie.imdbID === movie.imdbID
       ).userRating = movie.userRating;
@@ -49,21 +54,32 @@ function App(): JSX.Element {
     setSelectedId(null);
   }
 
+  function handleDeleteWatched(id: string): void {
+    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+  }
+
   useEffect(() => {
     setIsLoading(true);
     setError("");
+    const controller = new AbortController();
 
     moviesService
-      .getMoviesBySearch(query)
+      .getMoviesBySearch(query, controller)
       .then((movies) => {
         setMovies(movies);
       })
       .catch((err) => {
         setError(err.message);
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        handleCloseMovie()
+        setError("");
+        setIsLoading(false);
+      });
 
-    return () => console.log("Effect cleanup");
+    return () => {
+      controller.abort();
+    };
   }, [query]);
 
   return (
@@ -76,7 +92,7 @@ function App(): JSX.Element {
         <Box>
           {isLoading && <Loader />}
           {query.length === 0 && (
-            <ErrorMessage message="Please enter a query Search..." />
+            <ErrorMessage message="Please enter a query search..." />
           )}
           {!isLoading && !error && (
             <MovieList
@@ -92,11 +108,15 @@ function App(): JSX.Element {
               onCloseMovie={handleCloseMovie}
               onAddWatched={handleAddWatched}
               selectedId={selectedId}
+              isWatched={isWatched}
             />
           ) : (
             <>
               <WatchedSummary watched={watched} />
-              <WatchedList watched={watched} />
+              <WatchedList
+                onDeleteWatched={handleDeleteWatched}
+                watched={watched}
+              />
             </>
           )}
         </Box>

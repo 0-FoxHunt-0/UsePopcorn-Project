@@ -3,15 +3,12 @@ import "./Movie.css";
 
 interface MovieProps {
   movie: MovieModel;
-  onSelectMovie: (id: string) => void;
+  onSelectMovie: (movie: MovieModel) => void;
 }
 
 function Movie(props: MovieProps): JSX.Element {
   return (
-    <li
-      className="Movie"
-      onClick={() => props.onSelectMovie(props.movie.imdbID)}
-    >
+    <li className="Movie" onClick={() => props.onSelectMovie(props.movie)}>
       <img src={props.movie.Poster} alt={`${props.movie.Title} poster`} />
       <h3>{props.movie.Title}</h3>
       <div>

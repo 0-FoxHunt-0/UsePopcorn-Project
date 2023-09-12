@@ -3,7 +3,7 @@ import appConfig from "../Utils/AppConfig";
 import SelectedMovieModel from "../Models/SelectedMovieModel";
 
 class MoviesService {
-  public async getMoviesBySearch(query: string) {
+  public async getMoviesBySearch(query: string, controller?: AbortController) {
     const apiKey: string = "7e073e2f";
 
     if (query.length) {
@@ -12,6 +12,7 @@ class MoviesService {
           apiKey: apiKey,
           s: query,
         },
+        signal: controller.signal,
       });
       const movies = response.data.Search;
       return movies;
@@ -28,7 +29,6 @@ class MoviesService {
       },
     });
     const movie = response.data;
-    console.log(movie);
     return movie;
   }
 }

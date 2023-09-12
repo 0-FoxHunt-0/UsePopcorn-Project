@@ -4,7 +4,7 @@ import "./MovieList.css";
 
 interface MovieListProps {
   movies: MovieModel[];
-  onSelectMovie: (id: string) => void;
+  onSelectMovie: (movie: MovieModel) => void;
 }
 
 function MovieList(props: MovieListProps): JSX.Element {
