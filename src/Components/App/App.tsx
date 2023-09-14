@@ -46,11 +46,13 @@ function App(): JSX.Element {
       .map((movie) => movie.imdbID)
       .includes(movie.imdbID);
 
-    if (watchedState)
-      updatedWatched.find(
+    if (watchedState) {
+      const movieToUpdate: WatchedModel = updatedWatched.find(
         (prevMovie) => prevMovie.imdbID === movie.imdbID
-      ).userRating = movie.userRating;
-    else updatedWatched.push(movie);
+      );
+      movieToUpdate.userRating = movie.userRating;
+      movieToUpdate.countRatingDecisions += movie.countRatingDecisions;
+    } else updatedWatched.push(movie);
 
     setWatched(updatedWatched);
     setSelectedId(null);

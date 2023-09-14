@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./SelectedMovie.css";
 import moviesService from "../../../../Services/MoviesService";
 import SelectedMovieModel from "../../../../Models/SelectedMovieModel";
@@ -19,6 +19,12 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [rating, setRating] = useState<number>(0);
+
+  const countRef = useRef<number>(0);
+
+  useEffect(() => {
+    if (rating) countRef.current++;
+  }, [rating]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -67,6 +73,7 @@ function SelectedMovie(props: SelectedMovieProps): JSX.Element {
       runtime: +movie.Runtime.slice().split(" ")[0],
       userRating: rating,
       Year: movie.Year,
+      countRatingDecisions: countRef.current,
     };
 
     props.onAddWatched(newWatchedMovie);

@@ -6,6 +6,7 @@ class WatchedModel {
   runtime: number;
   imdbRating: number;
   userRating: number;
+  countRatingDecisions: number;
 }
 
 export default WatchedModel;
