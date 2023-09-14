@@ -18,9 +18,6 @@ import Loader from "../Reusables/Loader/Loader";
 import "./App.css";
 
 function App(): JSX.Element {
-  // const [watched, setWatched] = useState<WatchedModel[]>(
-  //   JSON.parse(localStorage.getItem("watched")) || []
-  // );
   const [query, setQuery] = useState<string>("");
   const [selectedId, setSelectedId] = useState<string>(null);
   const [isWatched, setIsWatched] = useState<boolean>(false);

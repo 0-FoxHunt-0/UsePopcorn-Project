@@ -1,5 +1,5 @@
 class AppConfig {
-  public apiURL = "http://www.omdbapi.com/";
+  public apiURL = "https://www.omdbapi.com/";
 }
 
 const appConfig = new AppConfig();

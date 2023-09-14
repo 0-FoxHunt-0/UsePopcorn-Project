@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./SelectedMovie.css";
-import moviesService from "../../../../Services/MoviesService";
+import { useEffect, useRef, useState } from "react";
 import SelectedMovieModel from "../../../../Models/SelectedMovieModel";
+import WatchedModel from "../../../../Models/WatchedModel";
+import moviesService from "../../../../Services/MoviesService";
 import Loader from "../../../Reusables/Loader/Loader";
 import StarRating from "../../../StarRatingArea/StarRating/StarRating";
-import WatchedModel from "../../../../Models/WatchedModel";
+import "./SelectedMovie.css";
 
 interface SelectedMovieProps {
   selectedId: string;
