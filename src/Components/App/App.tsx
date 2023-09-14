@@ -19,7 +19,9 @@ import "./App.css";
 
 function App(): JSX.Element {
   const [movies, setMovies] = useState<MovieModel[]>([]);
-  const [watched, setWatched] = useState<WatchedModel[]>([]);
+  const [watched, setWatched] = useState<WatchedModel[]>(
+    JSON.parse(localStorage.getItem("watched")) || []
+  );
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [query, setQuery] = useState<string>("");
@@ -39,7 +41,7 @@ function App(): JSX.Element {
   }
 
   function handleAddWatched(movie: WatchedModel): void {
-    const updatedWatched = [...watched];
+    const updatedWatched: WatchedModel[] = [...watched];
     const watchedState: boolean = updatedWatched
       .map((movie) => movie.imdbID)
       .includes(movie.imdbID);
@@ -59,6 +61,10 @@ function App(): JSX.Element {
   }
 
   useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify(watched));
+  }, [watched]);
+
+  useEffect(() => {
     setIsLoading(true);
     setError("");
     const controller = new AbortController();
@@ -72,7 +78,7 @@ function App(): JSX.Element {
         setError(err.message);
       })
       .finally(() => {
-        handleCloseMovie()
+        handleCloseMovie();
         setError("");
         setIsLoading(false);
       });
