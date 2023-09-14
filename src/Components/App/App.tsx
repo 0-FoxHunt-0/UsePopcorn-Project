@@ -1,32 +1,39 @@
 import { useEffect, useState } from "react";
 
+import { useMovies } from "../../Hooks/useMovies";
 import MovieModel from "../../Models/MovieModel";
 import WatchedModel from "../../Models/WatchedModel";
-import Main from "../Main/Main";
-import Navbar from "../NavBarArea/Navbar/Navbar";
-import NumResults from "../NavBarArea/NumResults/NumResults";
-import Search from "../NavBarArea/Search/Search";
-
-import moviesService from "../../Services/MoviesService";
 import MovieList from "../ListsArea/MoviesArea/MovieList/MovieList";
 import SelectedMovie from "../ListsArea/MoviesArea/SelectedMovie/SelectedMovie";
 import WatchedList from "../ListsArea/WatchedArea/WatchedList/WatchedList";
 import WatchedSummary from "../ListsArea/WatchedArea/WatchedSummary/WatchedSummary";
+import Main from "../Main/Main";
+import Navbar from "../NavBarArea/Navbar/Navbar";
+import NumResults from "../NavBarArea/NumResults/NumResults";
+import Search from "../NavBarArea/Search/Search";
 import Box from "../Reusables/Box/Box";
 import ErrorMessage from "../Reusables/ErrorMessage/ErrorMessage";
 import Loader from "../Reusables/Loader/Loader";
 import "./App.css";
+import { useLocalStorage } from "../../Hooks/useLocalStorage";
 
 function App(): JSX.Element {
-  const [movies, setMovies] = useState<MovieModel[]>([]);
-  const [watched, setWatched] = useState<WatchedModel[]>(
-    JSON.parse(localStorage.getItem("watched")) || []
-  );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
+  // const [watched, setWatched] = useState<WatchedModel[]>(
+  //   JSON.parse(localStorage.getItem("watched")) || []
+  // );
   const [query, setQuery] = useState<string>("");
   const [selectedId, setSelectedId] = useState<string>(null);
   const [isWatched, setIsWatched] = useState<boolean>(false);
+
+  const { movies, isLoading, error } = useMovies({
+    query,
+    callback: handleCloseMovie,
+  });
+
+  const [watched, setWatched] = useLocalStorage<WatchedModel[]>({
+    initialState: [],
+    key: "watched",
+  });
 
   function handleSelectMovie(movie: MovieModel): void {
     const watchedState: boolean = watched
@@ -61,34 +68,6 @@ function App(): JSX.Element {
   function handleDeleteWatched(id: string): void {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
-
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setError("");
-    const controller = new AbortController();
-
-    moviesService
-      .getMoviesBySearch(query, controller)
-      .then((movies) => {
-        setMovies(movies);
-      })
-      .catch((err) => {
-        setError(err.message);
-      })
-      .finally(() => {
-        handleCloseMovie();
-        setError("");
-        setIsLoading(false);
-      });
-
-    return () => {
-      controller.abort();
-    };
-  }, [query]);
 
   return (
     <div className="App">
