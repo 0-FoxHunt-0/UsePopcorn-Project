@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import { useLocalStorage } from "../../Hooks/useLocalStorage";
 import { useMovies } from "../../Hooks/useMovies";
+
 import MovieModel from "../../Models/MovieModel";
 import WatchedModel from "../../Models/WatchedModel";
 import MovieList from "../ListsArea/MoviesArea/MovieList/MovieList";
@@ -15,7 +16,6 @@ import Box from "../Reusables/Box/Box";
 import ErrorMessage from "../Reusables/ErrorMessage/ErrorMessage";
 import Loader from "../Reusables/Loader/Loader";
 import "./App.css";
-import { useLocalStorage } from "../../Hooks/useLocalStorage";
 
 function App(): JSX.Element {
   // const [watched, setWatched] = useState<WatchedModel[]>(
